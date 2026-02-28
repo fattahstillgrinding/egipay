@@ -1,5 +1,5 @@
 /* ===========================
-   EgiPay - Custom Stylesheet
+   SolusiMu - Custom Stylesheet
    =========================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -459,7 +459,7 @@ h6 {
 }
 
 .card-mini-2 {
-    bottom: 10%;
+    top: 5%;
     left: 0;
     animation-delay: 2s;
     z-index: 2;

@@ -44,7 +44,7 @@ $colors = [
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Sistem Insentif Edukasi – EgiPay</title>
+  <title>Sistem Insentif Edukasi – SolusiMu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -163,7 +163,7 @@ $colors = [
       <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
       <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
     </svg>
-    <span class="brand-text" style="font-size:1.2rem;">EgiPay</span>
+    <span class="brand-text" style="font-size:1.2rem;">SolusiMu</span>
   </div>
 
   <ul class="sidebar-menu">
@@ -426,7 +426,7 @@ $colors = [
   </div>
 
   <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border-glass);text-align:center;color:var(--text-muted);font-size:0.75rem;">
-    EgiPay Dashboard v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
+    SolusiMu Dashboard v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
   </div>
 </main>
 

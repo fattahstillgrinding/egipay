@@ -65,7 +65,7 @@ try {
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>EgiPay Installer</title>
+  <title>SolusiMu Installer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -93,7 +93,7 @@ try {
       <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
     </svg>
     <div>
-      <h1>EgiPay Installer</h1>
+      <h1>SolusiMu Installer</h1>
       <div class="subtitle">Setup Database Otomatis</div>
     </div>
   </div>
@@ -114,7 +114,7 @@ try {
     <div style="font-size:0.8rem;color:#64748b;margin-bottom:1rem;">
       Login demo: <strong>merchant@demo.com</strong> / <strong>password</strong>
     </div>
-    <a href="login.php" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i>Buka EgiPay</a>
+    <a href="login.php" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i>Buka SolusiMu</a>
   </div>
 
   <div class="warn">

@@ -73,7 +73,7 @@ if ($reg['status'] === 'pending' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     [
                         $userId,
                         'Selamat Datang di SolusiMu!',
-                        'Pendaftaran berhasil! Biaya registrasi Rp 12.007 telah diterima. Akun Anda siap digunakan.',
+                        'Pendaftaran berhasil! Biaya registrasi Rp 12.000 telah diterima. Akun Anda siap digunakan.',
                     ]
                 );
 
@@ -355,7 +355,7 @@ $pmLabels = [
             <td style="color:#94a3b8;font-weight:600;">01</td>
             <td>
               <div style="font-weight:700;">Biaya Registrasi Member</div>
-              <div style="font-size:.75rem;color:#94a3b8;">Pendaftaran akun membership SolusiMu</div>
+              <div style="font-size:.75rem;color:#94a3b8;">Pendaftaran akun merchant SolusiMu</div>
             </td>
             <td><span style="background:rgba(108,99,255,.1);color:#6c63ff;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;"><?= ucfirst($reg['plan']) ?></span></td>
             <td class="text-end" style="font-weight:700;"><?= formatRupiah($reg['amount']) ?></td>
@@ -404,7 +404,7 @@ $pmLabels = [
       <i class="bi bi-check-circle-fill me-2 text-success"></i>
       Invoice ini adalah bukti resmi aktivasi member SolusiMu. Simpan sebagai referensi.<br/>      <?php if (!empty($paidUser['member_code'])): ?>
       Kode Member Anda: <strong style="font-size:.9rem;letter-spacing:.04em;"><?= htmlspecialchars($paidUser['member_code']) ?></strong> &nbsp;&middot;&nbsp;
-      <?php endif; ?>      Pertanyaan: <strong>support@SolusiMu.com</strong> · Kode invoice: <strong><?= htmlspecialchars($reg['inv_no']) ?></strong>
+      <?php endif; ?>      Pertanyaan: <strong>support@solusimu.com</strong> · Kode invoice: <strong><?= htmlspecialchars($reg['inv_no']) ?></strong>
     </div>
   </div>
 </div>
@@ -508,8 +508,79 @@ $vaNumbers = [
       </div>
     </div>
 
+    <!-- ── Pilih metode pembayaran ── -->
+    <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:.75rem;">
+      <i class="bi bi-credit-card me-1"></i> Pilih Metode Pembayaran
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" id="pm-tabs">
+      <?php foreach ($pmLabels as $pmKey => $pm): ?>
+      <button type="button"
+        class="pm-tab <?= $selectedPm===$pmKey ? 'active' : '' ?>"
+        onclick="selectPm('<?= $pmKey ?>')">
+        <i class="bi <?= $pm['icon'] ?>" style="color:<?= $pm['color'] ?>;"></i>
+        <?= $pm['label'] ?>
+      </button>
+      <?php endforeach; ?>
+    </div>
+
+    <!-- ── QRIS Panel ── -->
+    <div id="pm-QRIS" class="pm-panel" style="<?= $selectedPm==='QRIS'?'':'display:none;' ?>">
+      <div style="text-align:center;padding:1.5rem;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;">
+        <div class="qr-placeholder mb-3"></div>
+        <div style="font-weight:700;color:#1e293b;margin-bottom:.25rem;">Scan QRIS</div>
+        <div style="font-size:.8rem;color:#64748b;margin-bottom:.75rem;">
+          Bayar dengan aplikasi GoPay, OVO, DANA, ShopeePay, mBanking, dll
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(0,212,255,.08));border:1px solid rgba(108,99,255,.2);border-radius:12px;padding:.75rem;display:inline-block;">
+          <div style="font-size:.7rem;color:#64748b;margin-bottom:2px;">Nominal Tepat</div>
+          <div style="font-family:'Space Grotesk';font-size:1.3rem;font-weight:800;color:#6c63ff;">
+            <?= formatRupiah($reg['amount']) ?>
+          </div>
+        </div>
+        <div style="font-size:.72rem;color:#94a3b8;margin-top:.75rem;">
+          <i class="bi bi-shield-check me-1"></i>QR Code berlaku selama sisa waktu pembayaran
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BCA Panel ── -->
+    <div id="pm-BCA" class="pm-panel" style="<?= $selectedPm==='BCA'?'':'display:none;' ?>">
+      <div style="background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;padding:1.5rem;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#f59e0b,#ef4444);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-bank" style="color:#fff;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;color:#1e293b;">Transfer Bank BCA</div>
+            <div style="font-size:.75rem;color:#64748b;">Virtual Account</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:1rem;border:1px solid #e2e8f0;margin-bottom:1rem;">
+          <div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:.25rem;">Nomor Rekening / VA</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;">
+            <span id="bca-va" style="font-family:'Space Grotesk';font-size:1.4rem;font-weight:800;color:#1e293b;letter-spacing:.05em;">
+              <?= $vaNumbers['BCA'] ?>
+            </span>
+            <button onclick="copyText('bca-va','BCA')" class="btn btn-sm"
+              style="background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.25);color:#6c63ff;border-radius:8px;font-size:.72rem;padding:4px 10px;">
+              <i class="bi bi-clipboard me-1"></i>Salin
+            </button>
+          </div>
+          <div style="font-size:.72rem;color:#94a3b8;margin-top:.5rem;">Atas nama: SolusiMu Payment</div>
+        </div>
+        <div style="font-size:.78rem;color:#64748b;line-height:1.6;">
+          <strong style="color:#1e293b;">Langkah Transfer:</strong><br/>
+          1. Buka aplikasi BCA Mobile / ATM BCA<br/>
+          2. Pilih Transfer → Virtual Account<br/>
+          3. Masukkan nomor VA di atas<br/>
+          4. Masukkan nominal <strong><?= formatRupiah($reg['amount']) ?></strong> — tepat!<br/>
+          5. Konfirmasi &amp; selesai
+        </div>
+      </div>
+    </div>
+
     <!-- ── GoPay Panel ── -->
-    <div id="pm-GOPAY" class="pm-panel">
+    <div id="pm-GOPAY" class="pm-panel" style="<?= $selectedPm==='GOPAY'?'':'display:none;' ?>">
       <div style="background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;padding:1.5rem;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;">
           <div style="width:42px;height:42px;background:linear-gradient(135deg,#00d4ff,#6c63ff);border-radius:10px;display:flex;align-items:center;justify-content:center;">
@@ -531,13 +602,47 @@ $vaNumbers = [
               <i class="bi bi-clipboard me-1"></i>Salin
             </button>
           </div>
-          <div style="font-size:.72rem;color:#94a3b8;margin-top:.5rem;">Atas nama: SolusiMu</div>
+          <div style="font-size:.72rem;color:#94a3b8;margin-top:.5rem;">Atas nama: SolusiMu Official</div>
         </div>
         <div style="font-size:.78rem;color:#64748b;line-height:1.6;">
           <strong style="color:#1e293b;">Cara Transfer:</strong><br/>
           1. Buka Gojek App → GoPay<br/>
           2. Pilih Kirim → masukkan nomor di atas<br/>
           3. Nominal <strong><?= formatRupiah($reg['amount']) ?></strong>, konfirmasi
+        </div>
+      </div>
+    </div>
+
+    <!-- ── OVO Panel ── -->
+    <div id="pm-OVO" class="pm-panel" style="<?= $selectedPm==='OVO'?'':'display:none;' ?>">
+      <div style="background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0;padding:1.5rem;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#a78bfa,#6c63ff);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-phone-fill" style="color:#fff;font-size:1.2rem;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;color:#1e293b;">OVO</div>
+            <div style="font-size:.75rem;color:#64748b;">Transfer ke nomor OVO</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:1rem;border:1px solid #e2e8f0;margin-bottom:1rem;">
+          <div style="font-size:.7rem;color:#94a3b8;font-weight:700;text-transform:uppercase;margin-bottom:.25rem;">Nomor OVO Tujuan</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;">
+            <span id="ovo-num" style="font-family:'Space Grotesk';font-size:1.3rem;font-weight:800;color:#1e293b;">
+              <?= $vaNumbers['OVO'] ?>
+            </span>
+            <button onclick="copyText('ovo-num','OVO')" class="btn btn-sm"
+              style="background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:#a78bfa;border-radius:8px;font-size:.72rem;padding:4px 10px;">
+              <i class="bi bi-clipboard me-1"></i>Salin
+            </button>
+          </div>
+          <div style="font-size:.72rem;color:#94a3b8;margin-top:.5rem;">Atas nama: SolusiMu Official</div>
+        </div>
+        <div style="font-size:.78rem;color:#64748b;line-height:1.6;">
+          <strong style="color:#1e293b;">Cara Transfer:</strong><br/>
+          1. Buka OVO App → Transfer<br/>
+          2. Pilih ke sesama OVO<br/>
+          3. Masukkan nomor di atas, nominal <strong><?= formatRupiah($reg['amount']) ?></strong>
         </div>
       </div>
     </div>

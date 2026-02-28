@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-// EgiPay - Database Connection (PDO)
+// SolusiMu - Database Connection (PDO)
 // ============================================================
 
 define('DB_HOST', 'localhost');
@@ -114,7 +114,7 @@ function renderDbError(string $msg): string {
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Database Error – EgiPay</title>
+  <title>Database Error – SolusiMu</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Segoe UI',sans-serif;background:#0a0a1a;color:#f1f5f9;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
@@ -130,7 +130,7 @@ function renderDbError(string $msg): string {
   <div class="box">
     <div class="icon">🔌</div>
     <h1>Koneksi Database Gagal</h1>
-    <p>EgiPay tidak dapat terhubung ke database MySQL. Pastikan:</p>
+    <p>SolusiMu tidak dapat terhubung ke database MySQL. Pastikan:</p>
     <p>✓ <strong>XAMPP MySQL</strong> sudah berjalan<br>
        ✓ Database <strong>egipay</strong> sudah dibuat<br>
        ✓ Konfigurasi di <code>includes/db.php</code> sudah benar</p>

@@ -1,9 +1,9 @@
 <?php
 // ============================================================
-// EgiPay - Core Config & Helpers
+// SolusiMu - Core Config & Helpers
 // ============================================================
 
-define('SITE_NAME',    'EgiPay');
+define('SITE_NAME',    'SolusiMu');
 define('SITE_TAGLINE', 'Gateway Pembayaran Terpercaya');
 define('SITE_VERSION', '2.0.0');
 define('CURRENCY',     'IDR');

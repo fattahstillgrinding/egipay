@@ -107,7 +107,7 @@ $dbCheck = dbFetchOne('SELECT 1 AS ok')['ok'] ?? 0;
 <aside class="sidebar" id="mainSidebar">
   <div class="sidebar-logo">
     <svg width="36" height="36" viewBox="0 0 42 42" fill="none"><defs><linearGradient id="sLg" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect width="42" height="42" rx="12" fill="url(#sLg)"/><path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity=".95"/><circle cx="30" cy="28" r="3" fill="white" opacity=".8"/></svg>
-    <span class="brand-text" style="font-size:1.1rem;">EgiPay <span class="sa-badge">SU</span></span>
+    <span class="brand-text" style="font-size:1.1rem;">SolusiMu <span class="sa-badge">SU</span></span>
   </div>
   <ul class="sidebar-menu">
     <li class="sidebar-section-title">Super Admin</li>
@@ -150,7 +150,7 @@ $dbCheck = dbFetchOne('SELECT 1 AS ok')['ok'] ?? 0;
           Platform Overview <span class="sa-badge ms-2">SUPER ADMIN</span>
         </h1>
         <p style="font-size:.78rem;color:var(--text-muted);margin:0;">
-          Halo <?= htmlspecialchars($user['name']) ?> — Pantau seluruh platform EgiPay secara real-time
+          Halo <?= htmlspecialchars($user['name']) ?> — Pantau seluruh platform SolusiMu secara real-time
         </p>
       </div>
     </div>
@@ -369,7 +369,7 @@ $dbCheck = dbFetchOne('SELECT 1 AS ok')['ok'] ?? 0;
   </div>
 
   <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border-glass);text-align:center;color:var(--text-muted);font-size:.72rem;">
-    EgiPay Super Admin Panel v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
+    SolusiMu Super Admin Panel v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
   </div>
 </main>
 

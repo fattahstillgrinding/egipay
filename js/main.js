@@ -1,5 +1,5 @@
 /* ===========================
-   EgiPay - Main JavaScript
+   SolusiMu - Main JavaScript
    =========================== */
 
 /* Page Loader */

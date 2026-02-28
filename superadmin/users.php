@@ -174,7 +174,7 @@ function qstr(array $override = []): string {
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Kelola Pengguna – Super Admin EgiPay</title>
+  <title>Kelola Pengguna – Super Admin SolusiMu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -202,7 +202,7 @@ function qstr(array $override = []): string {
 <aside class="sidebar" id="mainSidebar">
   <div class="sidebar-logo">
     <svg width="36" height="36" viewBox="0 0 42 42" fill="none"><defs><linearGradient id="sLg" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect width="42" height="42" rx="12" fill="url(#sLg)"/><path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity=".95"/><circle cx="30" cy="28" r="3" fill="white" opacity=".8"/></svg>
-    <span class="brand-text" style="font-size:1.1rem;">EgiPay <span class="sa-badge">SU</span></span>
+    <span class="brand-text" style="font-size:1.1rem;">SolusiMu <span class="sa-badge">SU</span></span>
   </div>
   <ul class="sidebar-menu">
     <li class="sidebar-section-title">Super Admin</li>

@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             dbExecute(
                 'INSERT INTO notifications (user_id, type, title, message) VALUES (?, "success", ?, ?)',
-                [$userId, 'Selamat Datang di EgiPay!', 'Pendaftaran dikonfirmasi oleh Admin. Akun Anda aktif!']
+                [$userId, 'Selamat Datang di SolusiMu!', 'Pendaftaran dikonfirmasi oleh Admin. Akun Anda aktif!']
             );
             dbExecute(
                 'UPDATE registration_payments SET status="paid", paid_at=NOW(), payment_method="Manual Admin" WHERE id=?',
@@ -139,7 +139,7 @@ $regs = dbFetchAll(
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Registrasi Member – Admin EgiPay</title>
+  <title>Registrasi Member – Admin SolusiMu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -170,7 +170,7 @@ $regs = dbFetchAll(
       <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
     </svg>
     <div class="sidebar-logo-text">
-      <span>EgiPay</span>
+      <span>SolusiMu</span>
       <small>Admin Panel <span class="admin-badge">ADMIN</span></small>
     </div>
   </div>
@@ -479,7 +479,7 @@ $regs = dbFetchAll(
   </div>
 
   <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border-glass);text-align:center;color:var(--text-muted);font-size:0.75rem;">
-    EgiPay Admin Panel v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
+    SolusiMu Admin Panel v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
   </div>
 </main>
 

@@ -10,8 +10,8 @@ require_once __DIR__ . '/includes/lang.php';
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>API Documentation – EgiPay</title>
-  <meta name="description" content="Dokumentasi lengkap EgiPay Payment API. Integrasi gateway pembayaran dalam hitungan menit menggunakan REST API kami."/>
+  <title>API Documentation – SolusiMu</title>
+  <meta name="description" content="Dokumentasi lengkap SolusiMu Payment API. Integrasi gateway pembayaran dalam hitungan menit menggunakan REST API kami."/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -41,7 +41,7 @@ require_once __DIR__ . '/includes/lang.php';
         <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
         <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
       </svg>
-      <span class="brand-text">EgiPay</span>
+      <span class="brand-text">SolusiMu</span>
     </a>
 
     <div class="d-flex align-items-center gap-2 ms-auto">
@@ -97,13 +97,13 @@ require_once __DIR__ . '/includes/lang.php';
         <!-- ── GETTING STARTED ──────────────────────── -->
         <section id="getting-started">
           <div class="section-badge mb-3"><i class="bi bi-book me-1"></i>Pengantar</div>
-          <h2>EgiPay Payment API</h2>
-          <p>Selamat datang di dokumentasi <strong>EgiPay REST API</strong>. API ini memungkinkan Anda mengintegrasikan gateway pembayaran EgiPay ke dalam platform Anda dengan cepat dan aman.</p>
+          <h2>SolusiMu Payment API</h2>
+          <p>Selamat datang di dokumentasi <strong>SolusiMu REST API</strong>. API ini memungkinkan Anda mengintegrasikan gateway pembayaran SolusiMu ke dalam platform Anda dengan cepat dan aman.</p>
           <p>API kami menggunakan format <strong>JSON</strong> untuk request dan response, serta menggunakan metode HTTP standar (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>).</p>
 
           <h3>Prasyarat</h3>
           <ul>
-            <li>Daftar akun EgiPay (gratis) di <a href="register.php" style="color:var(--primary-light);">register.php</a></li>
+            <li>Daftar akun SolusiMu (gratis) di <a href="register.php" style="color:var(--primary-light);">register.php</a></li>
             <li>Aktifkan akun dan dapatkan API Key dari dashboard</li>
             <li>Gunakan HTTPS untuk semua request di mode production</li>
           </ul>
@@ -128,7 +128,7 @@ require_once __DIR__ . '/includes/lang.php';
               <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard me-1"></i>Copy</button>
             </div>
             <pre><code><span class="tok-f">curl</span> -u <span class="tok-s">"SK-Live-xxxx:"</span> \
-  -X POST <span class="tok-s">"https://api.egipay.id/v2/charge"</span> \
+  -X POST <span class="tok-s">"https://api.solusimu.id/v2/charge"</span> \
   -H <span class="tok-s">"Content-Type: application/json"</span> \
   -d <span class="tok-s">'{"amount": 50000, "method": "qris"}'</span></code></pre>
           </div>
@@ -139,7 +139,7 @@ require_once __DIR__ . '/includes/lang.php';
               <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard me-1"></i>Copy</button>
             </div>
             <pre><code><span class="tok-k">$serverKey</span> = <span class="tok-s">'SK-Live-xxxx'</span>;
-<span class="tok-k">$response</span>  = <span class="tok-f">file_get_contents</span>(<span class="tok-s">'https://api.egipay.id/v2/charge'</span>, <span class="tok-n">false</span>, stream_context_create([
+<span class="tok-k">$response</span>  = <span class="tok-f">file_get_contents</span>(<span class="tok-s">'https://api.solusimu.id/v2/charge'</span>, <span class="tok-n">false</span>, stream_context_create([
     <span class="tok-s">'http'</span> => [
         <span class="tok-s">'method'</span>  => <span class="tok-s">'POST'</span>,
         <span class="tok-s">'header'</span>  => <span class="tok-s">"Authorization: Basic "</span> . <span class="tok-f">base64_encode</span>(<span class="tok-k">$serverKey</span> . <span class="tok-s">':'</span>),
@@ -161,13 +161,13 @@ require_once __DIR__ . '/includes/lang.php';
             <div class="col-md-6">
               <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:1.25rem;">
                 <div style="font-size:0.7rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">🟢 Production</div>
-                <code style="color:#e2e8f0;font-size:0.82rem;">https://api.egipay.id/v2</code>
+                <code style="color:#e2e8f0;font-size:0.82rem;">https://api.solusimu.id/v2</code>
               </div>
             </div>
             <div class="col-md-6">
               <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:14px;padding:1.25rem;">
                 <div style="font-size:0.7rem;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">🟡 Sandbox</div>
-                <code style="color:#e2e8f0;font-size:0.82rem;">https://sandbox.egipay.id/v2</code>
+                <code style="color:#e2e8f0;font-size:0.82rem;">https://sandbox.solusimu.id/v2</code>
               </div>
             </div>
           </div>
@@ -256,7 +256,7 @@ require_once __DIR__ . '/includes/lang.php';
   <span class="tok-k">"fee"</span>          : <span class="tok-n">0</span>,
   <span class="tok-k">"total"</span>        : <span class="tok-n">150000</span>,
   <span class="tok-k">"method"</span>       : <span class="tok-s">"qris"</span>,
-  <span class="tok-k">"qr_url"</span>       : <span class="tok-s">"https://api.egipay.id/qr/TXN-20240101-XK7P2Q.png"</span>,
+  <span class="tok-k">"qr_url"</span>       : <span class="tok-s">"https://api.solusimu.id/qr/TXN-20240101-XK7P2Q.png"</span>,
   <span class="tok-k">"expired_at"</span>   : <span class="tok-n">1704067200</span>,
   <span class="tok-k">"created_at"</span>   : <span class="tok-s">"2024-01-01T10:00:00Z"</span>
 }</code></pre>
@@ -278,7 +278,7 @@ require_once __DIR__ . '/includes/lang.php';
               <button class="copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard me-1"></i>Copy</button>
             </div>
             <pre><code><span class="tok-f">curl</span> -u <span class="tok-s">"SK-Live-xxxx:"</span> \
-  <span class="tok-s">"https://api.egipay.id/v2/transaction/TXN-20240101-XK7P2Q"</span></code></pre>
+  <span class="tok-s">"https://api.solusimu.id/v2/transaction/TXN-20240101-XK7P2Q"</span></code></pre>
           </div>
 
           <h3>Status Transaksi</h3>
@@ -327,7 +327,7 @@ require_once __DIR__ . '/includes/lang.php';
         <!-- ── QRIS ──────────────────────────────────── -->
         <section id="qris">
           <h2><i class="bi bi-phone me-2" style="color:#00d4ff;"></i>QRIS</h2>
-          <p>QRIS (Quick Response Code Indonesian Standard) memungkinkan pelanggan membayar menggunakan aplikasi e-wallet apapun. EgiPay menggunakan QRIS berstandar Bank Indonesia.</p>
+          <p>QRIS (Quick Response Code Indonesian Standard) memungkinkan pelanggan membayar menggunakan aplikasi e-wallet apapun. SolusiMu menggunakan QRIS berstandar Bank Indonesia.</p>
           <ul>
             <li>Fee: <strong>0% (gratis)</strong></li>
             <li>Waktu expire: <strong>30 menit</strong></li>
@@ -337,8 +337,8 @@ require_once __DIR__ . '/includes/lang.php';
           <div class="code-block">
             <div class="code-block-header"><span class="code-lang">Response QR</span></div>
             <pre><code>{
-  <span class="tok-k">"qr_url"</span>    : <span class="tok-s">"https://api.egipay.id/qr/TXN-xxxxx.png"</span>,
-  <span class="tok-k">"qr_string"</span> : <span class="tok-s">"00020101021126660014ID.CO.EGIPAY.WWW..."</span>,
+  <span class="tok-k">"qr_url"</span>    : <span class="tok-s">"https://api.solusimu.id/qr/TXN-xxxxx.png"</span>,
+  <span class="tok-k">"qr_string"</span> : <span class="tok-s">"00020101021126660014ID.CO.SOLUSIMU.WWW..."</span>,
   <span class="tok-k">"expired_at"</span>: <span class="tok-n">1704069000</span>
 }</code></pre>
           </div>
@@ -391,10 +391,10 @@ require_once __DIR__ . '/includes/lang.php';
         <!-- ── WEBHOOK ────────────────────────────────── -->
         <section id="webhook">
           <h2>Webhook / Notifikasi</h2>
-          <p>EgiPay akan mengirim HTTP POST ke URL webhook Anda setiap kali status transaksi berubah. Konfigurasi URL webhook di <strong>Dashboard → Pengaturan → Webhook</strong>.</p>
+          <p>SolusiMu akan mengirim HTTP POST ke URL webhook Anda setiap kali status transaksi berubah. Konfigurasi URL webhook di <strong>Dashboard → Pengaturan → Webhook</strong>.</p>
 
           <h3>Verifikasi Signature</h3>
-          <p>Setiap webhook menyertakan header <code>X-EgiPay-Signature</code> untuk memvalidasi keaslian request:</p>
+          <p>Setiap webhook menyertakan header <code>X-SolusiMu-Signature</code> untuk memvalidasi keaslian request:</p>
 
           <div class="code-block">
             <div class="code-block-header">
@@ -405,7 +405,7 @@ require_once __DIR__ . '/includes/lang.php';
 <span class="tok-k">$payload</span>   = <span class="tok-f">file_get_contents</span>(<span class="tok-s">'php://input'</span>);
 <span class="tok-k">$signature</span> = <span class="tok-f">hash_hmac</span>(<span class="tok-s">'sha256'</span>, <span class="tok-k">$payload</span>, <span class="tok-k">$serverKey</span>);
 
-<span class="tok-k">if</span> (<span class="tok-k">$signature</span> !== <span class="tok-k">$_SERVER</span>[<span class="tok-s">'HTTP_X_EGIPAY_SIGNATURE'</span>]) {
+<span class="tok-k">if</span> (<span class="tok-k">$signature</span> !== <span class="tok-k">$_SERVER</span>[<span class="tok-s">'HTTP_X_SOLUSIMU_SIGNATURE'</span>]) {
     <span class="tok-f">http_response_code</span>(<span class="tok-n">401</span>);
     <span class="tok-f">exit</span>(<span class="tok-s">'Signature tidak valid'</span>);
 }
@@ -462,9 +462,9 @@ require_once __DIR__ . '/includes/lang.php';
           <div class="row g-3">
             <?php
             $sdks = [
-              ['bi bi-filetype-php','PHP','Mendukung PHP 7.4+','composer require egipay/php-sdk','#6c63ff'],
-              ['bi bi-node-plus',   'Node.js','Mendukung Node 16+','npm install egipay-sdk','#10b981'],
-              ['bi bi-filetype-py', 'Python','Mendukung Python 3.8+','pip install egipay','#f59e0b'],
+              ['bi bi-filetype-php','PHP','Mendukung PHP 7.4+','composer require solusimu/php-sdk','#6c63ff'],
+              ['bi bi-node-plus',   'Node.js','Mendukung Node 16+','npm install solusimu-sdk','#10b981'],
+              ['bi bi-filetype-py', 'Python','Mendukung Python 3.8+','pip install solusimu','#f59e0b'],
               ['bi bi-cup-hot',     'Java','Mendukung Java 8+','Maven / Gradle tersedia','#ef4444'],
             ];
             foreach ($sdks as [$icon, $name, $desc, $install, $color]):
@@ -546,10 +546,10 @@ require_once __DIR__ . '/includes/lang.php';
                 <i class="bi bi-chat-dots" style="color:var(--primary-light);"></i>Live Chat
               </a>
               <a href="#" style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-secondary);text-decoration:none;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-                <i class="bi bi-envelope" style="color:var(--primary-light);"></i>dev@egipay.id
+                <i class="bi bi-envelope" style="color:var(--primary-light);"></i>dev@solusimu.id
               </a>
               <a href="#" style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-secondary);text-decoration:none;padding:6px 0;">
-                <i class="bi bi-github" style="color:var(--primary-light);"></i>github.com/egipay
+                <i class="bi bi-github" style="color:var(--primary-light);"></i>github.com/solusimu
               </a>
             </div>
           </div>
