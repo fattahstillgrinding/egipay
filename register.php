@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/config.php';
 requireGuest();
 
 // ── Constants ──────────────────────────────────────────────────
-define('REG_FEE',        12000.00);
+define('REG_FEE',        12007.00);
 define('REG_EXPIRE_MIN', 15);
 
 $errors = [];
@@ -91,8 +91,8 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Daftar Gratis – EgiPay</title>
-  <meta name="description" content="Buat akun EgiPay gratis dan mulai menerima pembayaran hari ini."/>
+  <title>Daftar Gratis – SolusiMu</title>
+  <meta name="description" content="Buat akun SolusiMu gratis dan mulai menerima pembayaran hari ini."/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -123,7 +123,7 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
           <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
           <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
         </svg>
-        <span class="brand-text ms-2">EgiPay</span>
+        <span class="brand-text ms-2">SolusiMu</span>
       </a>
 
       <div>
@@ -250,7 +250,7 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
         <label style="display:flex;align-items:flex-start;gap:10px;font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;cursor:pointer;">
           <input type="checkbox" required style="accent-color:var(--primary);margin-top:2px;flex-shrink:0;">
           Saya menyetujui <a href="#" style="color:var(--primary-light);margin:0 3px;">Syarat & Ketentuan</a> dan
-          <a href="#" style="color:var(--primary-light);margin:0 3px;">Kebijakan Privasi</a> EgiPay.
+          <a href="#" style="color:var(--primary-light);margin:0 3px;">Kebijakan Privasi</a> SolusiMu.
         </label>
 
         <button type="submit" class="btn btn-primary-gradient w-100 py-3 fs-6 mb-3">

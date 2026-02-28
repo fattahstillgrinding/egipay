@@ -138,7 +138,7 @@ $allReferrals = $referralCode ? dbFetchAll(
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Dashboard – EgiPay</title>
+  <title>Dashboard – SolusiMu</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -181,7 +181,7 @@ $allReferrals = $referralCode ? dbFetchAll(
       <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
       <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
     </svg>
-    <span class="brand-text" style="font-size:1.2rem;">EgiPay</span>
+    <span class="brand-text" style="font-size:1.2rem;">SolusiMu</span>
   </div>
 
   <ul class="sidebar-menu">
@@ -207,8 +207,8 @@ $allReferrals = $referralCode ? dbFetchAll(
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-people"></i></span>Pelanggan</a></li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-receipt"></i></span>Invoice</a></li>
 
-    <li class="sidebar-section-title">Developer</li>
-    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>API Docs</a></li>
+    <li class="sidebar-section-title">E-Book</li>
+    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>E-book</a></li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-key"></i></span>API Keys</a></li>
 
     <li class="sidebar-section-title">Akun</li>
@@ -623,7 +623,7 @@ $allReferrals = $referralCode ? dbFetchAll(
           </div>
           <div>
             <div style="font-weight:800;font-size:1rem;">Link Referral Saya</div>
-            <div style="font-size:.72rem;color:var(--text-muted);">Bagikan & ajak orang bergabung ke EgiPay</div>
+            <div style="font-size:.72rem;color:var(--text-muted);">Bagikan & ajak orang bergabung ke SolusiMu</div>
           </div>
         </div>
 
@@ -638,12 +638,12 @@ $allReferrals = $referralCode ? dbFetchAll(
 
         <!-- Share buttons -->
         <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;">
-          <a href="https://wa.me/?text=<?= urlencode('Hei! Join EgiPay dan mulai terima pembayaran digital. Daftar pakai link referral saya: ' . $referralLink) ?>"
+          <a href="https://wa.me/?text=<?= urlencode('Hei! Join SolusiMu dan mulai terima pembayaran digital. Daftar pakai link referral saya: ' . $referralLink) ?>"
              target="_blank" rel="noopener"
              style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;border-radius:9px;padding:.3rem .8rem;font-size:.75rem;font-weight:700;text-decoration:none;">
             <i class="bi bi-whatsapp"></i> WhatsApp
           </a>
-          <a href="https://t.me/share/url?url=<?= urlencode($referralLink) ?>&text=<?= urlencode('Daftar EgiPay pakai link referral saya!') ?>"
+          <a href="https://t.me/share/url?url=<?= urlencode($referralLink) ?>&text=<?= urlencode('Daftar SolusiMu pakai link referral saya!') ?>"
              target="_blank" rel="noopener"
              style="display:inline-flex;align-items:center;gap:5px;background:rgba(0,136,204,.1);border:1px solid rgba(0,136,204,.25);color:#0088cc;border-radius:9px;padding:.3rem .8rem;font-size:.75rem;font-weight:700;text-decoration:none;">
             <i class="bi bi-telegram"></i> Telegram
@@ -684,7 +684,7 @@ $allReferrals = $referralCode ? dbFetchAll(
   <?php endif; ?>
 
   <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border-glass);text-align:center;color:var(--text-muted);font-size:0.75rem;">
-    EgiPay Dashboard v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
+    SolusiMu Dashboard v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
   </div>
 </main>
 
@@ -845,7 +845,7 @@ function copyRefLink() {
 function shareNative() {
   const link = document.getElementById('refLinkText')?.textContent?.trim();
   if (navigator.share && link) {
-    navigator.share({ title: 'EgiPay – Referral Saya', text: 'Daftar EgiPay pakai link referral saya!', url: link });
+    navigator.share({ title: 'SolusiMu – Referral Saya', text: 'Daftar SolusiMu pakai link referral saya!', url: link });
   } else { copyRefLink(); }
 }
 </script>

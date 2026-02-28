@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Masuk – EgiPay</title>
-  <meta name="description" content="Masuk ke akun EgiPay Anda untuk mengelola pembayaran bisnis."/>
+  <title>Masuk – SolusiMu</title>
+  <meta name="description" content="Masuk ke akun SolusiMu Anda untuk mengelola pembayaran bisnis."/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
           <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
         </svg>
-        <span class="brand-text ms-2">EgiPay</span>
+        <span class="brand-text ms-2">SolusiMu</span>
       </a>
 
       <div>
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
         </svg>
         <h1 class="auth-title">Selamat Datang</h1>
-        <p class="auth-subtitle">Masuk ke dashboard EgiPay Anda</p>
+        <p class="auth-subtitle">Masuk ke dashboard SolusiMu Anda</p>
       </div>
 
       <!-- General error -->
