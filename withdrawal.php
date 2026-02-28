@@ -224,7 +224,6 @@ $form = [
     <li class="sidebar-section-title">Utama</li>
     <li><a href="dashboard.php"  class="sidebar-link"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
     <li><a href="payment.php"    class="sidebar-link"><span class="icon"><i class="bi bi-send-fill"></i></span>Kirim Pembayaran</a></li>
-    <li><a href="#"              class="sidebar-link"><span class="icon"><i class="bi bi-arrow-left-right"></i></span>Transaksi</a></li>
     <li class="sidebar-has-submenu open">
       <a href="#" class="sidebar-link sidebar-link-toggle open" onclick="toggleSidebarSubmenu(this);return false;">
         <span class="icon"><i class="bi bi-wallet2"></i></span>
@@ -237,13 +236,6 @@ $form = [
         <li><a href="incentive_wallet.php" class="sidebar-sublink"><i class="bi bi-gift me-2"></i>Dompet Insentif</a></li>
       </ul>
     </li>
-    <li class="sidebar-section-title">Bisnis</li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-graph-up"></i></span>Analitik</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-people"></i></span>Pelanggan</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-receipt"></i></span>Invoice</a></li>
-    <li class="sidebar-section-title">Developer</li>
-    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>API Docs</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-key"></i></span>API Keys</a></li>
     <li class="sidebar-section-title">Akun</li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-gear"></i></span>Pengaturan</a></li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-headset"></i></span>Support</a></li>

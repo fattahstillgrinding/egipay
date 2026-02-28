@@ -188,7 +188,6 @@ $allReferrals = $referralCode ? dbFetchAll(
     <li class="sidebar-section-title">Utama</li>
     <li><a href="dashboard.php" class="sidebar-link active"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
     <li><a href="payment.php" class="sidebar-link"><span class="icon"><i class="bi bi-send-fill"></i></span>Kirim Pembayaran</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-arrow-left-right"></i></span>Transaksi</a></li>
     <li class="sidebar-has-submenu">
       <a href="#" class="sidebar-link sidebar-link-toggle" onclick="toggleSidebarSubmenu(this);return false;">
         <span class="icon"><i class="bi bi-wallet2"></i></span>
@@ -201,16 +200,8 @@ $allReferrals = $referralCode ? dbFetchAll(
         <li><a href="incentive_wallet.php" class="sidebar-sublink"><i class="bi bi-gift me-2"></i>Dompet Insentif</a></li>
       </ul>
     </li>
-
-    <li class="sidebar-section-title">Bisnis</li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-graph-up"></i></span>Analitik</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-people"></i></span>Pelanggan</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-receipt"></i></span>Invoice</a></li>
-
     <li class="sidebar-section-title">E-Book</li>
     <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>E-book</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-key"></i></span>API Keys</a></li>
-
     <li class="sidebar-section-title">Akun</li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-gear"></i></span>Pengaturan</a></li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-headset"></i></span>Support</a></li>
@@ -319,30 +310,23 @@ $allReferrals = $referralCode ? dbFetchAll(
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="stat-card animate-on-scroll animate-delay-2">
-        <div class="stat-card-icon" style="background:rgba(245,158,11,0.12);">
-          <i class="bi bi-arrow-repeat" style="background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
+
+     <div class="col-lg-6">
+      <div class="glass-table-wrapper p-4" style="height:100%;">
+        <h2 style="font-size:1rem;font-weight:700;margin-bottom:1.5rem;">Metode Terpopuler</h2>
+        <?php if ($methodBreakdown): ?>
+        <canvas id="methodChart" height="180" style="max-height:180px;"></canvas>
+        <div style="margin-top:1.5rem;" id="methodLegend"></div>
+        <?php else: ?>
+        <div style="text-align:center;padding:3rem 1rem;color:var(--text-muted);">
+          <i class="bi bi-bar-chart" style="font-size:2.5rem;margin-bottom:0.75rem;display:block;"></i>
+          Belum ada data transaksi
         </div>
-        <div class="stat-card-label">Total Transaksi Sukses</div>
-        <div class="stat-card-value"><?= number_format($totalTx['cnt'] ?? 0) ?></div>
-        <div class="stat-card-trend" style="color:var(--text-muted);">
-          Volume: <?= formatRupiah($totalTx['total_amount'] ?? 0) ?>
-        </div>
+        <?php endif; ?>
       </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="stat-card animate-on-scroll animate-delay-3">
-        <div class="stat-card-icon" style="background:rgba(247,37,133,0.12);">
-          <i class="bi bi-clock-history" style="background:linear-gradient(135deg,#f72585,#6c63ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
-        </div>
-        <div class="stat-card-label">Transaksi Pending</div>
-        <div class="stat-card-value"><?= $pendingTx['cnt'] ?? 0 ?></div>
-        <div class="stat-card-trend" style="color:var(--warning);">
-          <i class="bi bi-clock me-1"></i><?= formatRupiah($pendingTx['locked_amt'] ?? 0) ?>
-        </div>
-      </div>
-    </div>
+  </div>
+
   </div>
 
   <!-- ── Incentive & Referral Section ─────────────────────────── -->
@@ -495,7 +479,7 @@ $allReferrals = $referralCode ? dbFetchAll(
 
   <!-- ── Charts ────────────────────────────────────────────────── -->
   <div class="row g-4 mb-4">
-    <div class="col-lg-8">
+    <div class="col-lg-6">
       <div class="glass-table-wrapper p-4">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
           <h2 style="font-size:1rem;font-weight:700;margin:0;">Pendapatan 7 Hari Terakhir</h2>
@@ -506,21 +490,6 @@ $allReferrals = $referralCode ? dbFetchAll(
         <canvas id="revenueChart" height="240" style="max-height:240px;"></canvas>
       </div>
     </div>
-    <div class="col-lg-4">
-      <div class="glass-table-wrapper p-4" style="height:100%;">
-        <h2 style="font-size:1rem;font-weight:700;margin-bottom:1.5rem;">Metode Terpopuler</h2>
-        <?php if ($methodBreakdown): ?>
-        <canvas id="methodChart" height="180" style="max-height:180px;"></canvas>
-        <div style="margin-top:1.5rem;" id="methodLegend"></div>
-        <?php else: ?>
-        <div style="text-align:center;padding:3rem 1rem;color:var(--text-muted);">
-          <i class="bi bi-bar-chart" style="font-size:2.5rem;margin-bottom:0.75rem;display:block;"></i>
-          Belum ada data transaksi
-        </div>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
 
   <!-- ── Recent Transactions ──────────────────────────────────── -->
   <div class="glass-table-wrapper animate-on-scroll" style="margin-bottom:2rem;">
@@ -590,27 +559,6 @@ $allReferrals = $referralCode ? dbFetchAll(
   </div>
 
   <!-- ── Quick Actions ─────────────────────────────────────────── -->
-  <div class="row g-3">
-    <?php
-    $actions = [
-      ['bi bi-send-fill','linear-gradient(135deg,#6c63ff,#00d4ff)','Kirim Uang','Transfer ke rekening atau e-wallet','payment.php'],
-      ['bi bi-qr-code','linear-gradient(135deg,#10b981,#00d4ff)','Buat QRIS','Generate kode QR pembayaran instan','#'],
-      ['bi bi-file-earmark-text','linear-gradient(135deg,#f59e0b,#ef4444)','Buat Invoice','Kirim invoice professional ke klien','#'],
-      ['bi bi-download','linear-gradient(135deg,#f72585,#6c63ff)','Tarik Dana','Cairkan saldo ke rekening bank','#'],
-    ];
-    foreach ($actions as [$icon, $grad, $title, $desc, $link]):
-    ?>
-    <div class="col-sm-6 col-lg-3">
-      <a href="<?= $link ?>" class="feature-card d-block text-decoration-none" style="padding:1.5rem;">
-        <div style="width:48px;height:48px;border-radius:14px;background:rgba(108,99,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.3rem;">
-          <i class="<?= $icon ?>" style="background:<?= $grad ?>;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
-        </div>
-        <div style="font-weight:700;font-size:0.9rem;margin-bottom:0.25rem;"><?= $title ?></div>
-        <div style="color:var(--text-muted);font-size:0.75rem;"><?= $desc ?></div>
-      </a>
-    </div>
-    <?php endforeach; ?>
-  </div>
 
   <!-- ── Referral Link Card ─────────────────────────────────────── -->
   <?php if ($referralLink): ?>
