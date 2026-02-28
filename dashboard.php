@@ -62,27 +62,6 @@ $transactions = dbFetchAll(
     [$userId]
 );
 
-// ── Weekly revenue chart data (last 7 days) ───────────────────
-$weeklyData = dbFetchAll(
-    'SELECT DATE(created_at) AS day, COALESCE(SUM(amount),0) AS total
-     FROM transactions
-     WHERE user_id = ? AND status = "success"
-       AND created_at >= CURDATE() - INTERVAL 6 DAY
-     GROUP BY DATE(created_at)
-     ORDER BY day ASC',
-    [$userId]
-);
-
-// Fill in missing days
-$weekLabels = [];
-$weekValues = [];
-$dataMap    = array_column($weeklyData, 'total', 'day');
-for ($i = 6; $i >= 0; $i--) {
-    $d = date('Y-m-d', strtotime("-{$i} days"));
-    $weekLabels[] = date('D', strtotime($d));
-    $weekValues[] = (float)($dataMap[$d] ?? 0);
-}
-
 // ── Payment method breakdown ──────────────────────────────────
 $methodBreakdown = dbFetchAll(
     'SELECT pm.name, pm.color, COUNT(*) AS cnt
@@ -201,7 +180,7 @@ $allReferrals = $referralCode ? dbFetchAll(
       </ul>
     </li>
     <li class="sidebar-section-title">E-Book</li>
-    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>E-book</a></li>
+    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-book-fill"></i></span>E-book</a></li>
     <li class="sidebar-section-title">Akun</li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-gear"></i></span>Pengaturan</a></li>
     <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-headset"></i></span>Support</a></li>
@@ -477,20 +456,6 @@ $allReferrals = $referralCode ? dbFetchAll(
     </div>
   </div>
 
-  <!-- ── Charts ────────────────────────────────────────────────── -->
-  <div class="row g-4 mb-4">
-    <div class="col-lg-6">
-      <div class="glass-table-wrapper p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-          <h2 style="font-size:1rem;font-weight:700;margin:0;">Pendapatan 7 Hari Terakhir</h2>
-          <span style="font-size:0.75rem;color:var(--text-muted);">
-            Total: <?= formatRupiah(array_sum($weekValues)) ?>
-          </span>
-        </div>
-        <canvas id="revenueChart" height="240" style="max-height:240px;"></canvas>
-      </div>
-    </div>
-
   <!-- ── Recent Transactions ──────────────────────────────────── -->
   <div class="glass-table-wrapper animate-on-scroll" style="margin-bottom:2rem;">
     <div class="d-flex justify-content-between align-items-center p-4 pb-0 flex-wrap gap-2">
@@ -640,61 +605,7 @@ $allReferrals = $referralCode ? dbFetchAll(
 <script src="js/main.js"></script>
 <script>
 // ── PHP data to JS ─────────────────────────────────────────────
-const weekLabels = <?= json_encode($weekLabels) ?>;
-const weekValues = <?= json_encode($weekValues) ?>;
 const methodData = <?= json_encode(array_values($methodBreakdown)) ?>;
-
-// ── Revenue Chart ──────────────────────────────────────────────
-const revCtx = document.getElementById('revenueChart')?.getContext('2d');
-if (revCtx) {
-  const revGrad = revCtx.createLinearGradient(0, 0, 0, 240);
-  revGrad.addColorStop(0, 'rgba(108,99,255,0.35)');
-  revGrad.addColorStop(1, 'rgba(108,99,255,0)');
-  new Chart(revCtx, {
-    type: 'line',
-    data: {
-      labels: weekLabels,
-      datasets: [{
-        label: 'Pendapatan',
-        data: weekValues,
-        borderColor: '#6c63ff',
-        backgroundColor: revGrad,
-        borderWidth: 2.5,
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: '#6c63ff',
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 8,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { intersect: false, mode: 'index' },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: 'rgba(15,15,30,0.95)',
-          borderColor: 'rgba(108,99,255,0.3)',
-          borderWidth: 1,
-          titleColor: '#f1f5f9',
-          bodyColor: '#94a3b8',
-          padding: 12,
-          callbacks: { label: ctx => ' Rp ' + ctx.raw.toLocaleString('id-ID') }
-        }
-      },
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#64748b', font: { size: 11 } } },
-        y: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#64748b', font: { size: 11 }, callback: v => 'Rp ' + (v/1000000).toFixed(1) + 'jt' }
-        }
-      }
-    }
-  });
-}
 
 // ── Method Donut Chart ─────────────────────────────────────────
 if (methodData.length > 0) {
