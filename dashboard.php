@@ -126,7 +126,7 @@ $insentifRoyalty = max(0, $totalInsentifDiterima - $insentifBerbagi);
 
 // ── All direct referrals (full list) ─────────────────────────
 $allReferrals = $referralCode ? dbFetchAll(
-    'SELECT u.name, u.member_code, r.created_at
+    'SELECT u.name, u.member_code, u.avatar, r.created_at
      FROM referrals r JOIN users u ON r.referred_id = u.id
      WHERE r.referrer_id = ?
      ORDER BY r.created_at ASC',
@@ -146,17 +146,6 @@ $allReferrals = $referralCode ? dbFetchAll(
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-<div class="page-loader" id="pageLoader">
-  <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
-  </div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-</div>
 <div class="toast-container" id="toastContainer"></div>
 
 <?php if ($flash): ?>
@@ -167,122 +156,19 @@ $allReferrals = $referralCode ? dbFetchAll(
   style="display:none"></div>
 <?php endif; ?>
 
-<!-- Sidebar Overlay (mobile) -->
-<div id="sidebarOverlay"
-  style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;display:none;backdrop-filter:blur(4px);"
-  class="d-lg-none"></div>
-
-<!-- ====== SIDEBAR ====== -->
-<aside class="sidebar" id="mainSidebar">
-  <div class="sidebar-logo">
-    <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
-      <defs><linearGradient id="sLg" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="42" height="42" rx="12" fill="url(#sLg)"/>
-      <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
-      <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
-    </svg>
-    <span class="brand-text" style="font-size:1.2rem;">SolusiMu</span>
-  </div>
-
-  <ul class="sidebar-menu">
-    <li class="sidebar-section-title">Utama</li>
-    <li><a href="dashboard.php" class="sidebar-link active"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
-    <li><a href="payment.php" class="sidebar-link"><span class="icon"><i class="bi bi-send-fill"></i></span>Kirim Pembayaran</a></li>
-    <li class="sidebar-has-submenu">
-      <a href="#" class="sidebar-link sidebar-link-toggle" onclick="toggleSidebarSubmenu(this);return false;">
-        <span class="icon"><i class="bi bi-wallet2"></i></span>
-        Dompet
-        <i class="bi bi-chevron-down sidebar-chevron ms-auto"></i>
-      </a>
-      <ul class="sidebar-submenu">
-        <li><a href="#" class="sidebar-sublink"><i class="bi bi-file-earmark-text me-2"></i>Wallet Statement</a></li>
-        <li><a href="withdrawal.php"       class="sidebar-sublink"><i class="bi bi-box-arrow-up me-2"></i>Penarikan Dana</a></li>
-        <li><a href="incentive_wallet.php" class="sidebar-sublink"><i class="bi bi-gift me-2"></i>Dompet Insentif</a></li>
-      </ul>
-    </li>
-    <li class="sidebar-section-title">E-Book</li>
-    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>E-book</a></li>
-    <li class="sidebar-section-title">Akun</li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-gear"></i></span>Pengaturan</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-headset"></i></span>Support</a></li>
-    <?php if (isAdmin()): ?>
-    <li class="sidebar-section-title">Administrasi</li>
-    <li><a href="admin/index.php" class="sidebar-link" style="color:#f72585;"><span class="icon"><i class="bi bi-shield-lock-fill"></i></span>Admin Panel</a></li>
-    <?php endif; ?>
-    <?php if (isSuperAdmin()): ?>
-    <li><a href="superadmin/index.php" class="sidebar-link" style="color:#c084fc;"><span class="icon"><i class="bi bi-shield-shaded"></i></span>Super Admin Panel</a></li>
-    <?php endif; ?>
-    <li><a href="logout.php" class="sidebar-link" style="color:#ef4444;"><span class="icon"><i class="bi bi-box-arrow-left"></i></span>Keluar</a></li>
-  </ul>
-
-  <div class="sidebar-bottom">
-    <div class="sidebar-profile">
-      <div class="profile-avatar-sm"><?= htmlspecialchars($user['avatar'] ?? '?') ?></div>
-      <div>
-        <div class="profile-name"><?= htmlspecialchars($user['name']) ?></div>
-        <div class="profile-role"><?= ucfirst($user['plan']) ?> Plan</div>
-      </div>
-    </div>
-  </div>
-</aside>
+<?php
+$pageTitle = 'Dashboard';
+$pageSubtitle = 'Selamat datang kembali, ' . htmlspecialchars($user['name']);
+include __DIR__ . '/includes/sidebar.php';
+?>
 
 <!-- ====== MAIN CONTENT ====== -->
 <main class="main-content">
+  <?php include __DIR__ . '/includes/header.php'; ?>
 
-  <!-- Top bar -->
-  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div class="d-flex align-items-center gap-3">
-      <button class="btn d-lg-none" id="sidebarToggle"
-        style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:10px;color:var(--text-primary);padding:8px 12px;">
-        <i class="bi bi-list fs-5"></i>
-      </button>
-      <div>
-        <h1 class="dash-title">Dashboard</h1>
-        <p class="dash-subtitle">Selamat datang kembali, <?= htmlspecialchars($user['name']) ?> 👋</p>
-      </div>
-    </div>
-    <div class="d-flex align-items-center gap-2">
-      <!-- Notification Bell -->
-      <div class="dropdown">
-        <button class="btn dropdown-toggle" id="notifBtn"
-          data-bs-toggle="dropdown" aria-expanded="false"
-          style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:12px;color:var(--text-primary);padding:8px 14px;position:relative;">
-          <i class="bi bi-bell"></i>
-          <?php if ($notifCount > 0): ?>
-          <span style="position:absolute;top:5px;right:8px;width:18px;height:18px;background:#f72585;border-radius:50%;border:2px solid var(--bg-dark);font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;">
-            <?= $notifCount ?>
-          </span>
-          <?php endif; ?>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" style="background:rgba(15,15,30,0.97);border:1px solid var(--border-glass);border-radius:16px;padding:0.5rem;min-width:300px;backdrop-filter:blur(20px);">
-          <li style="padding:0.75rem 1rem 0.5rem;border-bottom:1px solid var(--border-glass);margin-bottom:0.25rem;">
-            <span style="font-weight:700;font-size:0.875rem;">Notifikasi</span>
-          </li>
-          <?php if ($notifications): ?>
-            <?php foreach ($notifications as $n): ?>
-            <li style="padding:0.5rem 0.75rem;border-radius:10px;cursor:default;">
-              <div style="display:flex;gap:10px;align-items:flex-start;">
-                <div style="width:32px;height:32px;border-radius:10px;background:rgba(108,99,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem;color:var(--primary-light);">
-                  <i class="bi bi-<?= $n['type']==='success'?'check-circle':'info-circle' ?>"></i>
-                </div>
-                <div>
-                  <div style="font-size:0.78rem;font-weight:600;"><?= htmlspecialchars($n['title']) ?></div>
-                  <div style="font-size:0.72rem;color:var(--text-muted);"><?= htmlspecialchars(substr($n['message'],0,60)).'...' ?></div>
-                </div>
-              </div>
-            </li>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <li style="padding:1rem;text-align:center;color:var(--text-muted);font-size:0.8rem;">Tidak ada notifikasi</li>
-          <?php endif; ?>
-        </ul>
-      </div>
-      <a href="payment.php" class="btn btn-primary-gradient px-4 py-2">
-        <i class="bi bi-plus-lg me-1"></i>Bayar Baru
-      </a>
-    </div>
-  </div>
-
+  <!-- Content Body -->
+  <div class="content-body">
+  
   <!-- ── Stats Cards ──────────────────────────────────────────── -->
   <div class="row g-4 mb-4">
     <div class="col-sm-6 col-xl-3">
@@ -330,7 +216,7 @@ $allReferrals = $referralCode ? dbFetchAll(
   </div>
 
   <!-- ── Incentive & Referral Section ─────────────────────────── -->
-  <div class="row g-4 mb-4">
+  <div class="row g-4 mb-4" style="margin-top:1rem;">
 
     <!-- Sertifikat + Wallet Summary -->
     <div class="col-lg-6">
@@ -422,7 +308,11 @@ $allReferrals = $referralCode ? dbFetchAll(
           <?php foreach ($allReferrals as $i => $rf): ?>
           <div style="display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0.5rem;border-radius:10px;background:rgba(255,255,255,0.03);">
             <span style="width:20px;text-align:right;font-size:0.7rem;color:var(--text-muted);font-weight:700;flex-shrink:0;"><?= $i + 1 ?>.</span>
+            <?php if (!empty($rf['avatar']) && file_exists(__DIR__ . '/media/avatars/' . $rf['avatar'])): ?>
+            <img src="<?= BASE_URL ?>/media/avatars/<?= htmlspecialchars($rf['avatar']) ?>" alt="<?= htmlspecialchars($rf['name']) ?>" style="width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+            <?php else: ?>
             <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:800;color:#fff;flex-shrink:0;"><?= mb_strtoupper(mb_substr($rf['name'], 0, 1)) ?></div>
+            <?php endif; ?>
             <div style="flex:1;min-width:0;">
               <div style="font-size:0.78rem;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?= htmlspecialchars($rf['name']) ?></div>
               <?php if (!empty($rf['member_code'])): ?>

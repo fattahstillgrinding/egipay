@@ -54,7 +54,7 @@ if ($reg['status'] === 'pending' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     [$uName, $uEmail, $uHashed, $uPhone, $uPlan, $initials]
                 );
                 $userId     = (int)dbLastId();
-                $memberCode = 'SMU-' . sprintf('%04d', $userId);
+                $memberCode = 'MU-' . sprintf('%09d', $userId);
                 $newRefCode = generateReferralCode($uName);
                 dbExecute(
                     'UPDATE users SET member_code=?, referral_code=?, referred_by=? WHERE id=?',

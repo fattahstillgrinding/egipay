@@ -26,12 +26,7 @@ $flash = getFlash();
 <!-- Page Loader -->
 <div class="page-loader" id="pageLoader">
   <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
+    <img src="media/logo/Screenshot_2026-02-28_133755-removebg-preview.png" alt="SolusiMu" style="width: 80px; height: auto;">
   </div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
@@ -93,8 +88,8 @@ $flash = getFlash();
             Digital Untuk Nusantara
           </h1>
 
-          <p class="hero-subtitle">Platform komunitas pembelajaran digital bagi Masyarakat Nusantara
-“Membangun kesejahteraan melalui literasi, bukan spekulasi.”
+          <p class="hero-subtitle">Mulai perjalanan finansial Anda dengan ilmu yang tepat.
+Dapatkan Ebook Eksklusif dan Kesempatan Mendapatkan Insentif Harian.
 </p>
 
           <div class="hero-actions">
@@ -139,8 +134,8 @@ $flash = getFlash();
       <div class="row g-4 justify-content-center">
         <?php
         $features = [
-          ['media/Screenshot 2026-02-28 142422.png', 'E - Book Kaya Dengan Prioritas', 'Panduan Realistis Mengelola Uang dari  
-Gaji Pertama hingga Bebas Finansial '],
+          ['media/Screenshot 2026-02-28 142422.png', 'E - Book Kaya Dengan Prioritas', 'Panduan praktis mengelola uang dari nol hingga mampu membangun kestabilan finansial secara bertahap.'],
+          ['media/Screenshot 2026-02-28 142422.png', 'Membership Solusimu', 'Akses ke komunitas eksklusif, webinar bulanan, dan konten premium untuk memperdalam pengetahuan finansial Anda.'],
         ];
         foreach ($features as $f): ?>
         <div class="col-md-6 col-lg-4">
@@ -165,16 +160,17 @@ Gaji Pertama hingga Bebas Finansial '],
         <h2 class="section-title">Mulai Hanya Dalam <span class="gradient-text">4 Langkah</span></h2>
       </div>
 
-      <div class="row g-4">
+      <div class="row g-4 justify-content-center">
         <?php
         $steps = [
-          ['01', 'Daftar Akun', 'Buat akun dalam 2 menit dengan email bisnis Anda.'],
-          ['02', 'Pilih Buku Anda', 'Pilih buku yang sesuai dengan kebutuhan Anda.'],
-          ['03', 'Pembayaran', 'Lakukan pembayaran dengan metode yang tersedia.'],
-          ['04', 'Selamat Membaca', 'Buku siap dibaca setelah pembayaran berhasil.'],
+          ['01', 'Daftar akun gratis', 'Buat akun dalam 2 menit dengan email bisnis Anda.'],
+          ['02', 'Beli Ebook Eksklusif Rp 12.000', 'Pilih buku yang sesuai dengan kebutuhan Anda.'],
+          ['03', 'Pelajari materi edukasi', 'Lakukan pembayaran dengan metode yang tersedia.'],
+          ['04', 'Bagikan edukasi kepada orang lain', 'Buku siap dibaca setelah pembayaran berhasil.'],
+          ['05', 'Dapatkan insentif harian', 'Buku siap dibaca setelah pembayaran berhasil.'],
         ];
         foreach ($steps as $s): ?>
-        <div class="col-md-3">
+        <div class="col-6 col-md-4 col-lg">
           <div class="step-card animate-on-scroll">
             <div class="step-number"><?= $s[0] ?></div>
             <h3 class="step-title"><?= $s[1] ?></h3>
@@ -201,8 +197,11 @@ Gaji Pertama hingga Bebas Finansial '],
             <div class="pricing-name">E - BOOk KAYA DENGAN PRIORITAS</div>
             <div class="pricing-price"><sup>Rp</sup>12K</div>
             <ul class="pricing-features">
-              <li><i class="bi bi-check-circle-fill check"></i> E - Book Kaya Dengan Prioritas</li>
-              <li><i class="bi bi-check-circle-fill check"></i> Membership Solusimu</li>
+              <li><i class="bi bi-check-circle-fill check"></i> Mengatur keuangan dengan benar</li>
+              <li><i class="bi bi-check-circle-fill check"></i> Menghindari kesalahan finansial umum</li>
+              <li><i class="bi bi-check-circle-fill check"></i> Menentukan prioritas keuangan</li>
+              <li><i class="bi bi-check-circle-fill check"></i> Membangun kebiasaan finansial sehat</li>
+              <li><i class="bi bi-check-circle-fill check"></i> Memulai perjalanan menuju kebebasan finansial</li>
             </ul>
             <a href="register.php?plan=starter" class="btn btn-primary-gradient w-100 py-3">Pilih Paket</a>
           </div>

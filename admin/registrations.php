@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 [$reg['name'], $reg['email'], $reg['password_hash'], $reg['phone'], $reg['plan'], $initials]
             );
             $userId     = (int)dbLastId();
-            $memberCode = 'SMU-' . sprintf('%04d', $userId);
+            $memberCode = 'MU-' . sprintf('%09d', $userId);
             dbExecute('UPDATE users SET member_code=? WHERE id=?', [$memberCode, $userId]);
             dbExecute('INSERT INTO wallets (user_id, balance) VALUES (?, 0.00)', [$userId]);
             dbExecute(

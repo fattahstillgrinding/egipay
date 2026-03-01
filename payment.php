@@ -112,67 +112,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
-<div class="page-loader" id="pageLoader">
-  <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
-  </div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-</div>
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Mobile sidebar overlay -->
-<div id="sidebarOverlay"
-  style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;display:none;"
-  class="d-lg-none"></div>
-
-<!-- == SIDEBAR ======================================================== -->
-<aside class="sidebar" id="mainSidebar">
-  <div class="sidebar-logo">
-    <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
-      <defs><linearGradient id="sLg2" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="42" height="42" rx="12" fill="url(#sLg2)"/>
-      <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
-      <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
-    </svg>
-    <span class="brand-text" style="font-size:1.2rem;">SolusiMu</span>
-  </div>
-  <ul class="sidebar-menu">
-    <li class="sidebar-section-title">Utama</li>
-    <li><a href="dashboard.php" class="sidebar-link"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
-    <li><a href="payment.php"  class="sidebar-link active"><span class="icon"><i class="bi bi-send-fill"></i></span>Kirim Pembayaran</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-arrow-left-right"></i></span>Transaksi</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-wallet2"></i></span>Dompet</a></li>
-    <li class="sidebar-section-title">Akun</li>
-    <li><a href="logout.php" class="sidebar-link" style="color:#ef4444;"><span class="icon"><i class="bi bi-box-arrow-left"></i></span>Keluar</a></li>
-  </ul>
-  <div class="sidebar-bottom">
-    <div class="sidebar-profile">
-      <div class="profile-avatar-sm"><?= htmlspecialchars($user['avatar'] ?? '?') ?></div>
-      <div>
-        <div class="profile-name"><?= htmlspecialchars($user['name']) ?></div>
-        <div class="profile-role"><?= ucfirst($user['plan']) ?> Plan</div>
-      </div>
-    </div>
-  </div>
-</aside>
+<?php
+$pageTitle = 'Kirim Pembayaran';
+$pageSubtitle = 'Saldo: ' . formatRupiah($wallet['balance'] ?? 0);
+include __DIR__ . '/includes/sidebar.php';
+?>
 
 <!-- ====== MAIN ====================================================== -->
 <main class="main-content">
-  <div class="d-flex align-items-center gap-3 mb-4">
-    <button class="btn d-lg-none" id="sidebarToggle"
-      style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:10px;color:var(--text-primary);padding:8px 12px;">
-      <i class="bi bi-list fs-5"></i>
-    </button>
-    <div>
-      <h1 class="dash-title">Kirim Pembayaran</h1>
-      <p class="dash-subtitle">Saldo: <strong style="color:var(--primary-light);"><?= formatRupiah($wallet['balance'] ?? 0) ?></strong></p>
-    </div>
-  </div>
+  <?php include __DIR__ . '/includes/header.php'; ?>
 
   <?php if (!empty($errors['general'])): ?>
   <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:12px;padding:0.75rem 1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;font-size:0.875rem;color:#ef4444;">

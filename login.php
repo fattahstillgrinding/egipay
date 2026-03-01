@@ -61,12 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="page-loader" id="pageLoader">
   <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
+    <img src="media/logo/Screenshot_2026-02-28_133755-removebg-preview.png" alt="SolusiMu" style="width: 80px; height: auto;">
   </div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
@@ -77,13 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <nav class="navbar fixed-top">
     <div class="container justify-content-between">
       <a class="navbar-brand" href="index.php">
-        <svg width="38" height="38" viewBox="0 0 42 42" fill="none">
-          <defs><linearGradient id="navLg2" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-          <rect width="42" height="42" rx="12" fill="url(#navLg2)"/>
-          <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
-          <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
-        </svg>
-        <span class="brand-text ms-2">SolusiMu</span>
+        <img src="media/logo/solusi-removebg-preview (3).png" alt="SolusiMu" style="height: 50px; width: auto; object-fit: contain;">
       </a>
 
       <div>

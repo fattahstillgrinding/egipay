@@ -95,7 +95,7 @@ $dbCheck = dbFetchOne('SELECT 1 AS ok')['ok'] ?? 0;
 <body>
 <div class="page-loader" id="pageLoader">
   <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect width="60" height="60" rx="16" fill="url(#lg1)"/><path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity=".9"/><circle cx="42" cy="40" r="4" fill="white" opacity=".7"/></svg>
+    <img src="../media/logo/Screenshot_2026-02-28_133755-removebg-preview.png" alt="SolusiMu" style="width: 80px; height: auto;">
   </div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>

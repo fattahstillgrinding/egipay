@@ -48,7 +48,7 @@ function getCurrentUser(): ?array {
     static $user = null;
     if ($user === null) {
         $user = dbFetchOne(
-            'SELECT id, name, email, phone, role, plan, status, avatar, member_code FROM users WHERE id = ? AND status = "active"',
+            'SELECT id, name, email, phone, role, plan, status, avatar, member_code, referral_code FROM users WHERE id = ? AND status = "active"',
             [$_SESSION['user_id']]
         );
         if (!$user) {
@@ -177,15 +177,13 @@ function redirect(string $url): never {
 
 // ── Referral code generator ──────────────────────────────────
 function generateReferralCode(string $name): string {
-    $slug = preg_replace('/[^a-z0-9]/', '', strtolower(explode(' ', trim($name))[0]));
-    $slug = substr($slug ?: 'user', 0, 10);
-    $rand = strtolower(substr(bin2hex(random_bytes(4)), 0, 6));
-    $code = $slug . 'egi-' . $rand;
+    $rand = strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+    $code = 'SMU-' . $rand;
     // ensure uniqueness
     $dup  = dbFetchOne('SELECT id FROM users WHERE referral_code = ?', [$code]);
     if ($dup) {
-        $rand = strtolower(substr(bin2hex(random_bytes(4)), 0, 6));
-        $code = $slug . 'egi-' . $rand;
+        $rand = strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+        $code = 'SMU-' . $rand;
     }
     return $code;
 }

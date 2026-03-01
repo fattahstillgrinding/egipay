@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-require_once __DIR__ . '/includes/lang.php';
 
 // Docs are always in Indonesian + bilingual terms; no need to load lang here
 // but start session so navbar can show login state
@@ -21,12 +20,7 @@ require_once __DIR__ . '/includes/lang.php';
 
 <div class="page-loader" id="pageLoader">
   <div class="loader-logo">
-    <svg width="56" height="56" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
+    <img src="media/logo/Screenshot_2026-02-28_133755-removebg-preview.png" alt="SolusiMu" style="width: 80px; height: auto;">
   </div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>

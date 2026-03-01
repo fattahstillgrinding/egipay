@@ -2,21 +2,17 @@
 require_once __DIR__ . '/includes/config.php';
 requireGuest();
 
-// ── Constants ──────────────────────────────────────────────────
-define('REG_FEE',        12007.00);
-define('REG_EXPIRE_MIN', 15);
-
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verifyCsrf();
-    $name     = trim($_POST['name']     ?? '');
-    $email    = trim($_POST['email']    ?? '');
-    $phone    = trim($_POST['phone']    ?? '');
-    $password = $_POST['password']      ?? '';
-    $confirm  = $_POST['password_confirm'] ?? '';
-    $plan     = in_array($_POST['plan'] ?? '', ['starter','business','enterprise'])
-                ? $_POST['plan'] : 'starter';
+    $name          = trim($_POST['name']     ?? '');
+    $email         = trim($_POST['email']    ?? '');
+    $phone         = trim($_POST['phone']    ?? '');
+    $password      = $_POST['password']      ?? '';
+    $confirm       = $_POST['password_confirm'] ?? '';
+    $referralCode  = trim($_POST['referral_code'] ?? '');
+    $plan          = 'membership'; // Default plan gratis
 
     // ── Validasi ───────────────────────────────────────────────
     if (strlen($name) < 3)
@@ -37,49 +33,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        // ── Ambil kode referral dari URL / session ─────────────
-        $refCode   = trim($_GET['ref'] ?? ($_SESSION['ref_code'] ?? ''));
+        // ── Ambil kode referral dari input form atau URL ───────
+        $refCode   = $referralCode ?: trim($_GET['ref'] ?? '');
         $referrer  = $refCode ? dbFetchOne('SELECT id FROM users WHERE referral_code = ?', [$refCode]) : null;
         $referrerId = $referrer ? (int)$referrer['id'] : null;
-        if ($refCode) $_SESSION['ref_code'] = $refCode; // persist across page reload
 
-        // ── Cek apakah ada tagihan pending yang belum kadaluarsa ─
-        $pending = dbFetchOne(
-            'SELECT token FROM registration_payments
-             WHERE email = ? AND status = "pending" AND expires_at > NOW()
-             LIMIT 1',
-            [$email]
-        );
-
-        if ($pending) {
-            // Tagihan masih aktif – arahkan ke halaman pembayaran
-            redirect(BASE_URL . '/invoice_register.php?token=' . $pending['token']);
-        }
-
-        // Hapus entri expired lama untuk email ini
-        dbExecute(
-            'DELETE FROM registration_payments WHERE email = ? AND (status = "expired" OR expires_at <= NOW())',
-            [$email]
-        );
-
-        // ── Buat tagihan baru ──────────────────────────────────
-        $token   = bin2hex(random_bytes(32));
-        $invNo   = 'INV-REG-' . strtoupper(bin2hex(random_bytes(4)));
-        $hashed  = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+        // ── Buat akun member langsung (gratis) ──────────────────
+        $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+        
+        $initials = strtoupper(substr($name, 0, 1));
+        $parts    = explode(' ', $name);
+        if (count($parts) > 1) $initials .= strtoupper(substr($parts[1], 0, 1));
 
         try {
+            $pdo = getDB();
+            $pdo->beginTransaction();
+
+            // Insert user
             dbExecute(
-                'INSERT INTO registration_payments
-                    (inv_no, token, name, email, phone, password_hash, plan, amount, status, expires_at, referral_code, referred_by)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, "pending", DATE_ADD(NOW(), INTERVAL ? MINUTE), ?, ?)',
-                [$invNo, $token, $name, $email, $phone ?: null, $hashed, $plan, REG_FEE, REG_EXPIRE_MIN, $refCode ?: null, $referrerId]
+                'INSERT INTO users (name, email, password, phone, role, plan, status, avatar, email_verified_at)
+                 VALUES (?, ?, ?, ?, "merchant", ?, "active", ?, NOW())',
+                [$name, $email, $hashed, $phone ?: null, $plan, $initials]
+            );
+            $userId = (int)dbLastId();
+            
+            // Generate member code & referral code
+            $memberCode = 'MU-' . sprintf('%09d', $userId);
+            $newRefCode = generateReferralCode($name);
+            dbExecute(
+                'UPDATE users SET member_code=?, referral_code=?, referred_by=? WHERE id=?',
+                [$memberCode, $newRefCode, $referrerId, $userId]
             );
 
-            auditLog(null, 'register_initiated', 'Tagihan registrasi dibuat: ' . $email);
-            redirect(BASE_URL . '/invoice_register.php?token=' . $token);
+            // Create wallet
+            dbExecute('INSERT INTO wallets (user_id, balance) VALUES (?, 0.00)', [$userId]);
+
+            // Create sandbox API key
+            dbExecute(
+                'INSERT INTO api_keys (user_id, name, key_type, client_key, server_key) VALUES (?, ?, ?, ?, ?)',
+                [$userId, 'Sandbox Key', 'sandbox', generateApiKey('sandbox'), generateApiKey('sandbox')]
+            );
+
+            // Welcome notification
+            dbExecute(
+                'INSERT INTO notifications (user_id, type, title, message) VALUES (?, "success", ?, ?)',
+                [
+                    $userId,
+                    'Selamat Datang di SolusiMu!',
+                    'Akun Anda berhasil dibuat. Mulai terima pembayaran sekarang!',
+                ]
+            );
+
+            // ── Catat referral jika ada ─────────────────────
+            if ($referrerId) {
+                dbExecute(
+                    'INSERT IGNORE INTO referrals (referrer_id, referred_id, referral_code) VALUES (?, ?, ?)',
+                    [$referrerId, $userId, $refCode]
+                );
+                // Notif untuk referrer
+                $refCount = dbFetchOne('SELECT COUNT(*) AS c FROM referrals WHERE referrer_id = ?', [$referrerId])['c'] ?? 0;
+                dbExecute(
+                    'INSERT INTO notifications (user_id, type, title, message) VALUES (?, "success", ?, ?)',
+                    [
+                        $referrerId,
+                        'Referral Berhasil! 🎉',
+                        htmlspecialchars($name) . ' baru saja mendaftar menggunakan link referral Anda. Total referral Anda: ' . $refCount,
+                    ]
+                );
+            }
+
+            // Hapus ref_code dari session
+            unset($_SESSION['ref_code']);
+
+            $pdo->commit();
+
+            auditLog($userId, 'register_success', 'Registrasi gratis berhasil: ' . $email);
+
+            // Auto-login
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $userId;
+            
+            setFlash('success', 'Selamat Datang!', 'Akun Anda berhasil dibuat. Selamat datang di SolusiMu!');
+            redirect(BASE_URL . '/dashboard.php');
 
         } catch (PDOException $e) {
-            $errors['general'] = 'Gagal membuat tagihan. Silakan coba lagi.';
+            if ($pdo->inTransaction()) $pdo->rollBack();
+            $errors['general'] = 'Gagal membuat akun. Silakan coba lagi.';
         }
     }
 }
@@ -101,12 +140,7 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
 <body>
 <div class="page-loader" id="pageLoader">
   <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-      <rect width="60" height="60" rx="16" fill="url(#lg1)"/>
-      <path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/>
-      <circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/>
-    </svg>
+    <img src="media/logo/Screenshot_2026-02-28_133755-removebg-preview.png" alt="SolusiMu" style="width: 80px; height: auto;">
   </div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
@@ -117,13 +151,7 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
   <nav class="navbar fixed-top">
     <div class="container justify-content-between">
       <a class="navbar-brand" href="index.php">
-        <svg width="38" height="38" viewBox="0 0 42 42" fill="none">
-          <defs><linearGradient id="navLg3" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs>
-          <rect width="42" height="42" rx="12" fill="url(#navLg3)"/>
-          <path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity="0.95"/>
-          <circle cx="30" cy="28" r="3" fill="white" opacity="0.8"/>
-        </svg>
-        <span class="brand-text ms-2">SolusiMu</span>
+        <img src="media/logo/solusi-removebg-preview (3).png" alt="SolusiMu" style="height: 50px; width: auto; object-fit: contain;">
       </a>
 
       <div>
@@ -166,22 +194,6 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
       <form method="POST" action="register.php">
         <?= csrfField() ?>
 
-        <!-- Plan selector -->
-        <div style="margin-bottom:1.5rem;">
-          <div class="form-label-modern"><i class="bi bi-tag me-1"></i>Pilih Paket</div>
-          <div class="row g-2" id="planSelector">
-            <?php foreach (['Membership' => '12k',] as $pk => $pl): ?>
-            <div class="col-4">
-              <label style="display:block;background:var(--bg-card);border:2px solid <?= $selectedPlan===$pk?'var(--primary)':'var(--border-glass)'?>;border-radius:12px;padding:0.75rem 0.5rem;text-align:center;cursor:pointer;transition:all 0.3s;" class="plan-label" data-plan="<?= $pk ?>">
-                <div style="font-size:0.75rem;font-weight:700;color:<?= $selectedPlan===$pk?'var(--primary-light)':'var(--text-secondary)'?>;"><?= ucfirst($pk) ?></div>
-                <div style="font-size:0.65rem;color:var(--text-muted);"><?= $pl ?></div>
-              </label>
-            </div>
-            <?php endforeach; ?>
-          </div>
-          <input type="hidden" name="plan" id="planInput" value="<?= htmlspecialchars($selectedPlan) ?>"/>
-        </div>
-
         <div class="row g-3">
           <div class="col-12">
             <label class="form-label-modern"><i class="bi bi-person me-1"></i>Nama Lengkap</label>
@@ -210,6 +222,16 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
               <input type="tel" name="phone" class="form-control-modern input-with-icon"
                 placeholder="+62 812 xxxx xxxx" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"/>
             </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label-modern"><i class="bi bi-people me-1"></i>Kode Referral <span style="color:var(--text-muted);font-weight:400;">(opsional)</span></label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-gift input-icon"></i>
+              <input type="text" name="referral_code" class="form-control-modern input-with-icon"
+                placeholder="Masukkan kode referral jika ada" value="<?= htmlspecialchars($_GET['ref'] ?? $_POST['referral_code'] ?? '') ?>"/>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Dapatkan benefit tambahan dengan kode referral dari teman Anda</div>
           </div>
 
           <div class="col-md-6">
@@ -275,19 +297,6 @@ $selectedPlan = $_GET['plan'] ?? ($_POST['plan'] ?? 'starter');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
 <script>
-// Plan selector
-document.querySelectorAll('.plan-label').forEach(label => {
-  label.addEventListener('click', function() {
-    document.querySelectorAll('.plan-label').forEach(l => {
-      l.style.borderColor = 'var(--border-glass)';
-      l.querySelector('div').style.color = 'var(--text-secondary)';
-    });
-    this.style.borderColor = 'var(--primary)';
-    this.querySelector('div').style.color = 'var(--primary-light)';
-    document.getElementById('planInput').value = this.getAttribute('data-plan');
-  });
-});
-
 // Password strength
 const regPwd = document.getElementById('regPwd');
 const bars   = [1,2,3,4].map(i => document.getElementById('sb' + i));

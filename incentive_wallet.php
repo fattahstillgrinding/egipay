@@ -63,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $targetUser = null;
         if (empty($errors['target_code'])) {
-            // Cari berdasarkan member_code ATAU email
+            // Cari berdasarkan referral_code, member_code, ATAU email
             $targetUser = dbFetchOne(
-                'SELECT id, name, email, avatar, member_code FROM users
-                 WHERE (member_code = ? OR email = ?) AND status = "active" AND id != ? LIMIT 1',
-                [$targetCode, strtolower($targetCode), $userId]
+                'SELECT id, name, email, avatar, member_code, referral_code FROM users
+                 WHERE (referral_code = ? OR member_code = ? OR email = ?) AND status = "active" AND id != ? LIMIT 1',
+                [$targetCode, $targetCode, strtolower($targetCode), $userId]
             );
             if (!$targetUser) {
                 $errors['target_code'] = 'Member tidak ditemukan atau tidak aktif.';
@@ -354,92 +354,28 @@ $statusColors = [
   </style>
 </head>
 <body>
-<div class="page-loader" id="pageLoader">
-  <div class="loader-logo">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><defs><linearGradient id="lg1" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs><rect width="60" height="60" rx="16" fill="url(#lg1)"/><path d="M18 20h14a8 8 0 010 16H18V20zm0 8h12a4 4 0 000-8" fill="white" opacity="0.9"/><circle cx="42" cy="40" r="4" fill="white" opacity="0.7"/></svg>
-  </div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-</div>
 <div class="toast-container" id="toastContainer"></div>
 
 <?php if ($flash): ?>
 <div id="flashMessage" data-type="<?= $flash['type'] ?>" data-title="<?= htmlspecialchars($flash['title']) ?>" data-message="<?= htmlspecialchars($flash['message']) ?>" style="display:none"></div>
 <?php endif; ?>
 
-<div id="sidebarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;display:none;backdrop-filter:blur(4px);" class="d-lg-none"></div>
-
-<!-- ====== SIDEBAR ====== -->
-<aside class="sidebar" id="mainSidebar">
-  <div class="sidebar-logo">
-    <svg width="36" height="36" viewBox="0 0 42 42" fill="none"><defs><linearGradient id="sLg" x1="0" y1="0" x2="42" y2="42"><stop stop-color="#6c63ff"/><stop offset="1" stop-color="#00d4ff"/></linearGradient></defs><rect width="42" height="42" rx="12" fill="url(#sLg)"/><path d="M12 14h10a6 6 0 010 12H12V14zm0 6h8a2 2 0 000-6" fill="white" opacity=".95"/><circle cx="30" cy="28" r="3" fill="white" opacity=".8"/></svg>
-    <span class="brand-text" style="font-size:1.2rem;">SolusiMu</span>
-  </div>
-  <ul class="sidebar-menu">
-    <li class="sidebar-section-title">Utama</li>
-    <li><a href="dashboard.php"  class="sidebar-link"><span class="icon"><i class="bi bi-grid-1x2-fill"></i></span>Dashboard</a></li>
-    <li><a href="payment.php"    class="sidebar-link"><span class="icon"><i class="bi bi-send-fill"></i></span>Kirim Pembayaran</a></li>
-    <li><a href="#"              class="sidebar-link"><span class="icon"><i class="bi bi-arrow-left-right"></i></span>Transaksi</a></li>
-    <li class="sidebar-has-submenu open">
-      <a href="#" class="sidebar-link sidebar-link-toggle open" onclick="toggleSidebarSubmenu(this);return false;">
-        <span class="icon"><i class="bi bi-wallet2"></i></span>
-        Dompet
-        <i class="bi bi-chevron-down sidebar-chevron ms-auto"></i>
-      </a>
-      <ul class="sidebar-submenu" style="display:block;">
-        <li><a href="#" class="sidebar-sublink"><i class="bi bi-file-earmark-text me-2"></i>Wallet Statement</a></li>
-        <li><a href="withdrawal.php"       class="sidebar-sublink"><i class="bi bi-box-arrow-up me-2"></i>Penarikan Dana</a></li>
-        <li><a href="incentive_wallet.php" class="sidebar-sublink active"><i class="bi bi-gift me-2"></i>Dompet Insentif</a></li>
-      </ul>
-    </li>
-    <li class="sidebar-section-title">Bisnis</li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-graph-up"></i></span>Analitik</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-people"></i></span>Pelanggan</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-receipt"></i></span>Invoice</a></li>
-    <li class="sidebar-section-title">Developer</li>
-    <li><a href="docs.php" class="sidebar-link"><span class="icon"><i class="bi bi-code-slash"></i></span>API Docs</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-key"></i></span>API Keys</a></li>
-    <li class="sidebar-section-title">Akun</li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-gear"></i></span>Pengaturan</a></li>
-    <li><a href="#" class="sidebar-link"><span class="icon"><i class="bi bi-headset"></i></span>Support</a></li>
-    <?php if ($user['role'] === 'admin'): ?>
-    <li class="sidebar-section-title">Administrasi</li>
-    <li><a href="admin/index.php" class="sidebar-link" style="color:#f72585;"><span class="icon"><i class="bi bi-shield-lock-fill"></i></span>Admin Panel</a></li>
-    <?php endif; ?>
-    <li><a href="logout.php" class="sidebar-link" style="color:#ef4444;"><span class="icon"><i class="bi bi-box-arrow-left"></i></span>Keluar</a></li>
-  </ul>
-  <div class="sidebar-bottom">
-    <div class="sidebar-profile">
-      <div class="profile-avatar-sm"><?= htmlspecialchars($user['avatar'] ?? '?') ?></div>
-      <div>
-        <div class="profile-name"><?= htmlspecialchars($user['name']) ?></div>
-        <div class="profile-role">Membership Plan</div>
-      </div>
-    </div>
-  </div>
-</aside>
+<?php
+$pageTitle = 'Dompet Insentif';
+$pageSubtitle = 'Transfer gratis antar member · Pencairan otomatis terjadwal';
+include __DIR__ . '/includes/sidebar.php';
+?>
 
 <!-- ====== MAIN CONTENT ====== -->
 <main class="main-content">
 
-  <!-- Top bar -->
-  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div class="d-flex align-items-center gap-3">
-      <button class="btn d-lg-none p-2" style="background:var(--bg-card);border:1px solid var(--border-glass);border-radius:10px;color:var(--text-primary);" onclick="document.getElementById('mainSidebar').classList.add('open');document.getElementById('sidebarOverlay').style.display='block';">
-        <i class="bi bi-list" style="font-size:1.2rem;"></i>
-      </button>
-      <div>
-        <h1 style="font-size:1.4rem;font-weight:800;margin:0;display:flex;align-items:center;gap:.5rem;">
-          <i class="bi bi-gift" style="color:#a855f7;"></i> Dompet Insentif
-        </h1>
-        <p style="font-size:.78rem;color:var(--text-muted);margin:0;">Transfer gratis antar member · Pencairan otomatis terjadwal</p>
-      </div>
-    </div>
-    <!-- Notif & current time -->
-    <div class="d-flex align-items-center gap-2">
-      <div class="schedule-badge <?= $isBeforeNoon ? 'schedule-today' : 'schedule-tomorrow' ?>">
-        <i class="bi bi-clock"></i>
-        <?= date('H:i') ?> WIB &nbsp;·&nbsp; <?= $isBeforeNoon ? 'Transfer hari ini' : 'Transfer besok' ?>
-      </div>
+  <?php include __DIR__ . '/includes/header.php'; ?>
+
+  <!-- Schedule badge -->
+  <div class="d-flex align-items-center gap-2 mb-4">
+    <div class="schedule-badge <?= $isBeforeNoon ? 'schedule-today' : 'schedule-tomorrow' ?>">
+      <i class="bi bi-clock"></i>
+      <?= date('H:i') ?> WIB &nbsp;·&nbsp; <?= $isBeforeNoon ? 'Transfer hari ini' : 'Transfer besok' ?>
     </div>
   </div>
 
@@ -559,7 +495,7 @@ $statusColors = [
               <div style="position:relative;">
                 <input type="text" name="target_code" id="targetCodeInput"
                   class="form-control-dark <?= isset($errors['target_code']) ? 'is-invalid' : '' ?>"
-                  placeholder="Contoh: SMU-0005 atau email@mail.com"
+                  placeholder="Contoh: Kode Referral, MU-000000005, atau email@mail.com"
                   value="<?= htmlspecialchars($formT['target_code']) ?>"
                   autocomplete="off"
                   oninput="lookupMember(this.value)"/>
