@@ -171,8 +171,8 @@ include __DIR__ . '/includes/sidebar.php';
   
   <!-- ── Stats Cards ──────────────────────────────────────────── -->
   <div class="row g-4 mb-4">
-    <div class="col-sm-6 col-xl-3">
-      <div class="stat-card animate-on-scroll" style="background:linear-gradient(135deg,rgba(108,99,255,0.2),rgba(108,99,255,0.04));border-color:rgba(108,99,255,0.3);">
+    <div class="col-sm-6 col-xl-3 d-flex">
+      <div class="stat-card animate-on-scroll w-100" style="background:linear-gradient(135deg,rgba(108,99,255,0.2),rgba(108,99,255,0.04));border-color:rgba(108,99,255,0.3);">
         <div class="stat-card-icon" style="background:rgba(108,99,255,0.15);">
           <i class="bi bi-wallet2" style="background:linear-gradient(135deg,#6c63ff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
         </div>
@@ -183,8 +183,8 @@ include __DIR__ . '/includes/sidebar.php';
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="stat-card animate-on-scroll animate-delay-1">
+    <div class="col-sm-6 col-xl-3 d-flex">
+      <div class="stat-card animate-on-scroll animate-delay-1 w-100">
         <div class="stat-card-icon" style="background:rgba(16,185,129,0.12);">
           <i class="bi bi-graph-up-arrow" style="background:linear-gradient(135deg,#10b981,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
         </div>
@@ -213,10 +213,8 @@ include __DIR__ . '/includes/sidebar.php';
     </div>
   </div>
 
-  </div>
-
   <!-- ── Incentive & Referral Section ─────────────────────────── -->
-  <div class="row g-4 mb-4" style="margin-top:1rem;">
+  <div class="row g-4 mb-4">
 
     <!-- Sertifikat + Wallet Summary -->
     <div class="col-lg-6">
@@ -369,7 +367,7 @@ include __DIR__ . '/includes/sidebar.php';
 
   <!-- ── Charts ────────────────────────────────────────────────── -->
   <div class="row g-4 mb-4">
-    <div class="col-lg-6">
+    <div class="col-12">
       <div class="glass-table-wrapper p-4">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
           <h2 style="font-size:1rem;font-weight:700;margin:0;">Pendapatan 7 Hari Terakhir</h2>
@@ -380,8 +378,7 @@ include __DIR__ . '/includes/sidebar.php';
         <canvas id="revenueChart" height="240" style="max-height:240px;"></canvas>
       </div>
     </div>
-
-  <!-- ── Recent Transactions ──────────────────────────────────── -->
+  </div>
   <div class="glass-table-wrapper animate-on-scroll" style="margin-bottom:2rem;">
     <div class="d-flex justify-content-between align-items-center p-4 pb-0 flex-wrap gap-2">
       <h2 style="font-size:1rem;font-weight:700;margin:0;">Transaksi Terbaru</h2>
@@ -524,6 +521,7 @@ include __DIR__ . '/includes/sidebar.php';
   <div style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--border-glass);text-align:center;color:var(--text-muted);font-size:0.75rem;">
     SolusiMu Dashboard v<?= SITE_VERSION ?> &nbsp;·&nbsp; <?= date('d M Y H:i') ?> WIB
   </div>
+  </div><!-- /.content-body -->
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
