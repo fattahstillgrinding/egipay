@@ -6,6 +6,40 @@ $user   = getCurrentUser();
 $userId = (int)$_SESSION['user_id'];
 $flash  = getFlash();
 
+// ── Handle POST: beli ebook ─────────────────────────────────
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verifyCsrf();
+    $buyId = (int)($_POST['ebook_id'] ?? 0);
+
+    // Daftar ebook valid (sama seperti di bawah)
+    $ebookMap = [
+        1 => ['title' => 'Kaya Dengan Prioritas',                             'price' => 12000],
+        2 => ['title' => 'Kaya dalam 12 Bulan dengan Strategi Prioritas',     'price' => 15000],
+    ];
+
+    if (!isset($ebookMap[$buyId])) {
+        setFlash('error', 'E-Book Tidak Ditemukan', 'Pilihan e-book tidak valid.');
+        redirect(BASE_URL . '/ebooks.php');
+    }
+
+    $ebookInfo = $ebookMap[$buyId];
+
+    // Buat token & invoice number
+    $token      = bin2hex(random_bytes(32));
+    $invNo      = 'INV-EB-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+    $uniqueCode = 7; // kode unik tetap, total selalu berakhiran 7
+
+    dbExecute(
+        'INSERT INTO ebook_orders (inv_no, token, user_id, ebook_id, ebook_title, amount, unique_code, status, expires_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, "pending", DATE_ADD(NOW(), INTERVAL 15 MINUTE))',
+        [$invNo, $token, $userId, $buyId, $ebookInfo['title'], $ebookInfo['price'], $uniqueCode]
+    );
+
+    auditLog($userId, 'ebook_order_created', 'Order e-book: ' . $ebookInfo['title'] . ' — ' . $invNo);
+
+    redirect(BASE_URL . '/invoice_ebook.php?token=' . urlencode($token));
+}
+
 // Data E-book yang tersedia
 $ebooks = [
     [
@@ -140,9 +174,13 @@ include __DIR__ . '/includes/sidebar.php';
           <?php endforeach; ?>
         </div>
 
-        <a href="payment.php?ebook_id=<?= $ebook['id'] ?>" class="btn btn-primary-gradient w-100 py-2">
-          <i class="bi bi-cart-plus me-2"></i>Beli Sekarang
-        </a>
+        <form method="POST" action="ebooks.php">
+          <?= csrfField() ?>
+          <input type="hidden" name="ebook_id" value="<?= $ebook['id'] ?>">
+          <button type="submit" class="btn btn-primary-gradient w-100 py-2">
+            <i class="bi bi-cart-plus me-2"></i>Beli Sekarang
+          </button>
+        </form>
       </div>
     </div>
     <?php endforeach; ?>
